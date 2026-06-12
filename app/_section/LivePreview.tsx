@@ -41,6 +41,7 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
     padding: 14,
     border: `1px solid ${state.border}`,
     borderRadius: Math.max(12, state.radius - 8),
+    transition: state.motion ? "border-color 0.2s ease, opacity 0.2s ease" : "none",
   };
   const labelStyle: CSSProperties = { display: "grid", gap: 6, color: state.foreground, fontSize: state.bodySize };
   const controlStyle: CSSProperties = {
@@ -78,7 +79,7 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
         </label>
         {state.showChips && (
           <div aria-label="Applied filters" className="flex flex-wrap gap-2">
-            {categories.slice(0, appliedCount).map((category) => <span key={category} className="rounded-full border px-3 py-1 text-xs" style={{ borderColor: state.border, color: state.accent }}>{category}</span>)}
+            {categories.slice(0, appliedCount).map((category) => <span key={category} className="rounded-full border px-3 py-1 text-xs" style={{ borderColor: state.border, color: state.accent, transition: state.motion ? "background 0.15s ease, border-color 0.15s ease" : "none" }}>{category}</span>)}
           </div>
         )}
       </fieldset>
@@ -111,8 +112,8 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
 
       {state.showApplyReset && (
         <div className="flex flex-wrap gap-2.5">
-          <button type="submit" disabled={state.disabled} className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: "#020617" }}>Apply filters</button>
-          <button type="reset" disabled={state.disabled} className="rounded-xl border px-4 py-2 text-sm" style={{ borderColor: state.border, color: state.foreground }}>Reset filters</button>
+          <button type="submit" disabled={state.disabled} className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: "#020617", transition: state.motion ? "background 0.15s ease, opacity 0.15s ease" : "none" }}>Apply filters</button>
+          <button type="reset" disabled={state.disabled} className="rounded-xl border px-4 py-2 text-sm" style={{ borderColor: state.border, color: state.foreground, transition: state.motion ? "border-color 0.15s ease, color 0.15s ease" : "none" }}>Reset filters</button>
         </div>
       )}
 
