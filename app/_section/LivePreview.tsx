@@ -2,9 +2,28 @@
 
 import type { CSSProperties } from "react";
 import type { FilterPanelState } from "../types";
+import { SYSTEM_FONTS } from "@/components/shared/typography/fontConstants";
 
 const CATEGORY_OPTIONS = ["Analytics", "Billing", "Customers", "Inventory", "Regions", "Teams", "Risk", "Lifecycle"];
 const TOGGLE_OPTIONS = ["In stock", "On sale", "Verified", "Recently updated", "High priority", "Has notes", "Requires review", "Archived"];
+
+function resolveFont(state: { fontBucket: "system" | "google"; googleFontFamily: string; systemFontIdx: number }): string {
+  return state.fontBucket === "google"
+    ? `"${state.googleFontFamily}", sans-serif`
+    : (SYSTEM_FONTS[state.systemFontIdx]?.css ?? "inherit");
+}
+
+function buildShadow(state: { shadowEnabled: boolean; shadowX: number; shadowY: number; shadowBlur: number; shadowSpread: number; shadowColor: string; shadowOpacity: number }): string {
+  if (!state.shadowEnabled) return "none";
+  const hex = Math.round(state.shadowOpacity * 255).toString(16).padStart(2, "0");
+  return `${state.shadowX}px ${state.shadowY}px ${state.shadowBlur}px ${state.shadowSpread}px ${state.shadowColor}${hex}`;
+}
+
+function buildRadius(state: { radiusLinked: boolean; radius: number; radiusTL: number; radiusTR: number; radiusBR: number; radiusBL: number }): string {
+  return state.radiusLinked
+    ? `${state.radius}px`
+    : `${state.radiusTL}px ${state.radiusTR}px ${state.radiusBR}px ${state.radiusBL}px`;
+}
 
 function clamp(value: number, min: number, max: number) {
   return Math.max(min, Math.min(max, value));
@@ -17,12 +36,17 @@ function shell(state: FilterPanelState): CSSProperties {
     display: "grid",
     gap: state.gap,
     padding: state.padding,
-    borderRadius: state.radius,
-    border: `${state.borderWidth}px solid ${state.border}`,
-    boxShadow: `0 ${Math.round(state.shadow / 3)}px ${state.shadow}px rgba(15, 23, 42, 0.26)`,
+    borderRadius: buildRadius(state),
+    border: `${state.borderWidth}px ${state.borderStyle} ${state.border}`,
+    boxShadow: `${buildShadow(state)}`,
     background: state.background,
     color: state.foreground,
-    fontFamily: state.fontFamily,
+    fontFamily: resolveFont(state),
+    fontStyle: state.fontStyle,
+    textTransform: state.textTransform,
+    textDecoration: state.textDecoration,
+    letterSpacing: `${state.letterSpacing}${state.letterSpacingUnit}`,
+    lineHeight: state.lineHeight,
     opacity: state.disabled ? 0.58 : 1,
   };
 }
@@ -41,7 +65,7 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
     padding: 14,
     border: `1px solid ${state.border}`,
     borderRadius: Math.max(12, state.radius - 8),
-    transition: state.motion ? "border-color 0.2s ease, opacity 0.2s ease" : "none",
+    transition: state.transitionDuration > 0 ? "border-color 0.2s ease, opacity 0.2s ease" : "none",
   };
   const labelStyle: CSSProperties = { display: "grid", gap: 6, color: state.foreground, fontSize: state.bodySize };
   const controlStyle: CSSProperties = {
@@ -79,7 +103,7 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
         </label>
         {state.showChips && (
           <div aria-label="Applied filters" className="flex flex-wrap gap-2">
-            {categories.slice(0, appliedCount).map((category) => <span key={category} className="rounded-full border px-3 py-1 text-xs" style={{ borderColor: state.border, color: state.accent, transition: state.motion ? "background 0.15s ease, border-color 0.15s ease" : "none" }}>{category}</span>)}
+            {categories.slice(0, appliedCount).map((category) => <span key={category} className="rounded-full border px-3 py-1 text-xs" style={{ borderColor: state.border, color: state.accent, transition: state.transitionDuration > 0 ? "background 0.15s ease, border-color 0.15s ease" : "none" }}>{category}</span>)}
           </div>
         )}
       </fieldset>
@@ -112,8 +136,8 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
 
       {state.showApplyReset && (
         <div className="flex flex-wrap gap-2.5">
-          <button type="submit" disabled={state.disabled} className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: "#020617", transition: state.motion ? "background 0.15s ease, opacity 0.15s ease" : "none" }}>Apply filters</button>
-          <button type="reset" disabled={state.disabled} className="rounded-xl border px-4 py-2 text-sm" style={{ borderColor: state.border, color: state.foreground, transition: state.motion ? "border-color 0.15s ease, color 0.15s ease" : "none" }}>Reset filters</button>
+          <button type="submit" disabled={state.disabled} className="rounded-xl px-4 py-2 text-sm font-bold" style={{ background: state.accent, color: "#020617", transition: state.transitionDuration > 0 ? "background 0.15s ease, opacity 0.15s ease" : "none" }}>Apply filters</button>
+          <button type="reset" disabled={state.disabled} className="rounded-xl border px-4 py-2 text-sm" style={{ borderColor: state.border, color: state.foreground, transition: state.transitionDuration > 0 ? "border-color 0.15s ease, color 0.15s ease" : "none" }}>Reset filters</button>
         </div>
       )}
 
