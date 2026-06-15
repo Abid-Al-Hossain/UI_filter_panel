@@ -1,4 +1,4 @@
-export type SectionId = "presets" | "basics" | "metadata" | "content" | "items" | "behavior" | "layout" | "placement" | "sizing" | "colors" | "border" | "radius" | "shadow" | "typography" | "transitions" | "focus-ring" | "states" | "accessibility";
+export type SectionId = "presets" | "basics" | "metadata" | "content" | "items" | "behavior" | "layout" | "placement" | "sizing" | "colors" | "border" | "radius" | "shadow" | "typography" | "transitions" | "focus-ring" | "states" | "disabled" | "accessibility";
 
 export type FilterPanelState = {
   title: string;
@@ -54,11 +54,18 @@ export type FilterPanelState = {
   muted: string;
   accent: string;
   border: string;
+  actionText: string;
   titleSize: number;
   bodySize: number;
   fontWeight: number;
   previewState: "default" | "hover" | "focus" | "active" | "open" | "closed" | "selected" | "loading" | "empty" | "error" | "success";
   disabled: boolean;
+  disabledOpacity: number;
+  disabledCursor: "not-allowed" | "default" | "pointer";
+  disabledUseCustomColors: boolean;
+  disabledBg: string;
+  disabledText: string;
+  disabledBorder: string;
   role: "search" | "form";
   groupCount: number;
   filterCount: number;
@@ -66,6 +73,34 @@ export type FilterPanelState = {
   layoutMode: "centered" | "sidebar" | "grouped" | "inline" | "stacked";
   showChips: boolean;
   showApplyReset: boolean;
+  // Chips
+  chipBg: string;
+  chipText: string;
+  chipBorder: string;
+  chipRadius: number;
+  chipHoverBg: string;
+  chipRemoveColor: string;
+  chipRemoveHoverBg: string;
+  // Apply button
+  applyBg: string;
+  applyText: string;
+  applyHoverBg: string;
+  // Reset button
+  resetBg: string;
+  resetText: string;
+  resetBorder: string;
+  resetHoverBg: string;
+  // Group headers
+  groupHeaderColor: string;
+  groupHeaderSize: number;
+  groupDividerColor: string;
+  // Panel header
+  panelHeaderBg: string;
+  panelHeaderBorder: string;
+  // Count badge & collapse
+  badgeCountBg: string;
+  badgeCountText: string;
+  collapseEnabled: boolean;
 };
 
 export type StudioPreset = { id: string; family: string; archetype: string; variant: string; size: string; tags: string[]; state: Partial<FilterPanelState> & Record<string, unknown> };
@@ -138,6 +173,10 @@ export const SECTIONS: Array<{ id: SectionId; label: string }> = [
   {
     "id": "states",
     "label": "State Preview"
+  },
+  {
+    "id": "disabled",
+    "label": "Disabled"
   },
   {
     "id": "accessibility",

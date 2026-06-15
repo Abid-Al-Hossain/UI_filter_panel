@@ -1,5 +1,4 @@
 "use client";
-
 import { SectionCard } from "@/components/shared/layout/SectionCard";
 import ColorControl from "@/components/shared/color/ColorControl";
 import type { FilterPanelState } from "../types";
@@ -7,8 +6,43 @@ import type { FilterPanelState } from "../types";
 type Props = { state: FilterPanelState; update: <K extends keyof FilterPanelState>(key: K, value: FilterPanelState[K]) => void };
 
 export default function ColorsSection({ state, update }: Props) {
-  return <SectionCard title="Colors" subtitle="Colors controls for native filter generation."><ColorControl label="Accent" value={state.accent} onChange={(value) => update("accent", value)} />
-<ColorControl label="Background" value={state.background} onChange={(value) => update("background", value)} />
-<ColorControl label="Foreground" value={state.foreground} onChange={(value) => update("foreground", value)} />
-<ColorControl label="Muted text" value={state.muted} onChange={(value) => update("muted", value)} /></SectionCard>;
+  return (
+    <div className="space-y-4">
+      <SectionCard title="Shell" subtitle="Base container colors.">
+        <ColorControl label="Background" value={state.background} onChange={(v) => update("background", v)} />
+        <ColorControl label="Foreground" value={state.foreground} onChange={(v) => update("foreground", v)} />
+        <ColorControl label="Accent" value={state.accent} onChange={(v) => update("accent", v)} />
+        <ColorControl label="Muted" value={state.muted} onChange={(v) => update("muted", v)} />
+        <ColorControl label="Border" value={state.border} onChange={(v) => update("border", v)} />
+      </SectionCard>
+      <SectionCard title="Action" subtitle="Primary button and call-to-action text.">
+        <ColorControl label="Action text" value={state.actionText} onChange={(v) => update("actionText", v)} />
+      </SectionCard>
+      <SectionCard title="Chips" subtitle="Applied filter chip colors.">
+        <ColorControl label="Chip background" value={state.chipBg} onChange={(v) => update("chipBg", v)} />
+        <ColorControl label="Chip text" value={state.chipText} onChange={(v) => update("chipText", v)} />
+        <ColorControl label="Chip border" value={state.chipBorder} onChange={(v) => update("chipBorder", v)} />
+        <ColorControl label="Chip hover background" value={state.chipHoverBg} onChange={(v) => update("chipHoverBg", v)} />
+        <ColorControl label="Chip remove" value={state.chipRemoveColor} onChange={(v) => update("chipRemoveColor", v)} />
+        <ColorControl label="Chip remove hover bg" value={state.chipRemoveHoverBg} onChange={(v) => update("chipRemoveHoverBg", v)} />
+      </SectionCard>
+      <SectionCard title="Buttons" subtitle="Apply and reset button colors.">
+        <ColorControl label="Apply background" value={state.applyBg} onChange={(v) => update("applyBg", v)} />
+        <ColorControl label="Apply text" value={state.applyText} onChange={(v) => update("applyText", v)} />
+        <ColorControl label="Apply hover background" value={state.applyHoverBg} onChange={(v) => update("applyHoverBg", v)} />
+        <ColorControl label="Reset background" value={state.resetBg} onChange={(v) => update("resetBg", v)} />
+        <ColorControl label="Reset text" value={state.resetText} onChange={(v) => update("resetText", v)} />
+        <ColorControl label="Reset border" value={state.resetBorder} onChange={(v) => update("resetBorder", v)} />
+        <ColorControl label="Reset hover background" value={state.resetHoverBg} onChange={(v) => update("resetHoverBg", v)} />
+      </SectionCard>
+      <SectionCard title="Headers & badge" subtitle="Group headers, panel header, and count badge.">
+        <ColorControl label="Group header" value={state.groupHeaderColor} onChange={(v) => update("groupHeaderColor", v)} />
+        <ColorControl label="Group divider" value={state.groupDividerColor} onChange={(v) => update("groupDividerColor", v)} />
+        <ColorControl label="Panel header bg" value={state.panelHeaderBg} onChange={(v) => update("panelHeaderBg", v)} />
+        <ColorControl label="Panel header border" value={state.panelHeaderBorder} onChange={(v) => update("panelHeaderBorder", v)} />
+        <ColorControl label="Badge background" value={state.badgeCountBg} onChange={(v) => update("badgeCountBg", v)} />
+        <ColorControl label="Badge text" value={state.badgeCountText} onChange={(v) => update("badgeCountText", v)} />
+      </SectionCard>
+    </div>
+  );
 }
