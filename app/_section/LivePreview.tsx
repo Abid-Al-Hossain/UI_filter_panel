@@ -83,7 +83,7 @@ export default function LivePreview({ state }: { state: FilterPanelState }) {
   };
 
   return (
-    <form id={state.id} role={state.role} aria-label={state.ariaLabel} aria-describedby={describedBy} style={shell(state)}>
+    <form id={state.id} role={state.role} aria-label={state.ariaLabel} aria-describedby={describedBy} onSubmit={(event) => event.preventDefault()} style={shell(state)}>
       <header className="grid gap-1.5" style={{ background: state.panelHeaderBg, borderBottom: `1px solid ${state.panelHeaderBorder}`, paddingBottom: 12 }}>
         <div className="flex items-center justify-between gap-3">
           <h3 style={{ margin: 0, fontSize: state.titleSize, fontWeight: state.fontWeight }}>{state.title}</h3>

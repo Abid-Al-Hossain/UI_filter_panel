@@ -58,7 +58,7 @@ export function buildReactCode(state: FilterPanelState) {
     "  const controlStyle = { width: \"100%\", border: `1px solid ${state.border}`, borderRadius: 12, padding: \"10px 12px\", background: \"transparent\", color: state.foreground };",
     "",
     "  return (",
-    "    <form id={state.id} role={state.role} aria-label={state.ariaLabel} aria-describedby={describedBy} style={shellStyle}>",
+    "    <form id={state.id} role={state.role} aria-label={state.ariaLabel} aria-describedby={describedBy} onSubmit={(event) => event.preventDefault()} style={shellStyle}>",
     "      <header style={{ display: \"grid\", gap: 6, background: state.panelHeaderBg, borderBottom: `1px solid ${state.panelHeaderBorder}`, paddingBottom: 12 }}>",
     "        <div style={{ display: \"flex\", alignItems: \"center\", justifyContent: \"space-between\", gap: 12 }}>",
     "          <h2 style={{ margin: 0, fontSize: state.titleSize, fontWeight: state.fontWeight }}>{state.title}</h2>",
